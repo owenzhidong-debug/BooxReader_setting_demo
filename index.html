@@ -99,15 +99,16 @@
     }
 
     .scope-icon {
-      width: 30px;
-      height: 30px;
+      min-width: 90px;
+      height: 28px;
+      padding: 0 9px;
       border: 1px solid #eeeeee;
       border-radius: 3px;
       background: #fff;
       color: #6f6f6f;
       display: grid;
       place-items: center;
-      font-size: 17px;
+      font-size: 12px;
       line-height: 1;
     }
 
@@ -490,7 +491,7 @@
     <section class="settings" aria-label="Reading style settings">
       <div class="title-row">
         <h1 class="title">Default</h1>
-        <button class="scope-icon" id="styleManage" type="button" aria-label="当前图书样式" title="当前图书样式" hidden>⚙</button>
+        <button class="scope-icon" id="styleManage" type="button" aria-label="当前修改仅对本书生效" title="当前修改仅对本书生效" hidden>仅对本书生效</button>
       </div>
 
       <div class="theme-list" aria-label="Themes">
@@ -581,11 +582,11 @@
 
     <div class="sheet-backdrop" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
       <div class="sheet">
-        <h2 id="sheetTitle">当前图书样式</h2>
-        <p id="sheetState">这本书正在使用单独样式，修改不会影响其他图书。</p>
+        <h2 id="sheetTitle">当前修改仅对本书生效</h2>
+        <p id="sheetState">这本书使用了单独的阅读设置，不会影响其他图书。</p>
         <div class="sheet-actions">
-          <button class="sheet-button" id="restoreButton" type="button">套用全局样式</button>
-          <button class="sheet-button primary" id="saveDefault" type="button">同步为全局样式</button>
+          <button class="sheet-button" id="restoreButton" type="button">套用全局设置</button>
+          <button class="sheet-button primary" id="saveDefault" type="button">同步到全局设置</button>
           <button class="sheet-button cancel" id="closeSheet" type="button">取消</button>
         </div>
       </div>
@@ -643,7 +644,7 @@
     function markBookOverride() {
       if (!hasBookOverride) {
         hasBookOverride = true;
-        showToast(hasShownScopeHint ? "已应用于当前图书" : "已应用于当前图书。可通过右上角设置同步为全局样式");
+        showToast(hasShownScopeHint ? "已应用于当前图书" : "已应用于当前图书。可通过右上角标签同步到全局设置");
         hasShownScopeHint = true;
       }
       renderSheetState();
@@ -651,13 +652,13 @@
 
     function renderSheetState() {
       if (hasBookOverride) {
-        sheetState.textContent = "这本书正在使用单独样式，修改不会影响其他图书。";
+        sheetState.textContent = "这本书使用了单独的阅读设置，不会影响其他图书。";
         styleManage.hidden = false;
         styleManage.classList.add("active");
         restoreButton.hidden = false;
         saveDefault.hidden = false;
       } else {
-        sheetState.textContent = "这本书正在跟随全局样式。";
+        sheetState.textContent = "这本书正在跟随全局设置。";
         styleManage.hidden = true;
         styleManage.classList.remove("active");
         restoreButton.hidden = true;
@@ -747,7 +748,7 @@
       sheet.classList.remove("show");
       renderSheetState();
       applyStyle();
-      showToast("当前图书已套用全局样式");
+      showToast("当前图书已套用全局设置");
     });
 
     styleManage.addEventListener("click", () => {
@@ -765,7 +766,7 @@
       sheet.classList.remove("show");
       renderSheetState();
       applyStyle();
-      showToast("已同步为全局样式；新书和跟随全局的图书会使用它");
+      showToast("已同步到全局设置；新书和跟随全局的图书会使用它");
     });
 
     document.getElementById("moreSetting").addEventListener("click", () => {
